@@ -1,3 +1,4 @@
+#!/usr/bin/env nodejs
 var express = require("express");
 var app = express();
 const ytdl = require("ytdl-core");
@@ -33,7 +34,6 @@ app.get("/translate", (req, res) => {
       .then(data => {
         res.header("Content-Type", "application/json");
         res.send(JSON.stringify({ text: data.text }, null, 4));
-        // res.send({ text: data.text });
       })
       .catch(error => {
         console.error(error);
