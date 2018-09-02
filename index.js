@@ -5,20 +5,19 @@ const ytdl = require("ytdl-core");
 const translate = require("google-translate-api");
 
 app.get("/youtubeDirect", function(req, res) {
-  var url = req.param("url");
-  ytdl.getInfo(url, (err, info) => {
-    if (err) throw err;
-    var audioFormats = ytdl.filterFormats(info.formats, "audioonly");
-    console.log("Formats with only audio: " + audioFormats.length);
-
-    var format = ytdl.chooseFormat(info.formats, { filter: "video" });
+  const { url } = req.query;
+  ytdl.getInfo(url, { debub: true }, (err, info) => {
+    if (err) {
+      console.error(err.message);
+      process.exit(1);
+      return;
+    }
+    let format = ytdl.chooseFormat(info.formats, {filter:'video'});
     if (format instanceof Error) {
       console.error(format.message);
       process.exit(1);
       return;
     }
-    console.log(format.url);
-
     res.header("Content-Type", "application/json");
     res.send(JSON.stringify({ downloadUrl: format.url }, null, 4));
   });
@@ -27,7 +26,6 @@ app.get("/youtubeDirect", function(req, res) {
 app.get("/translate", (req, res) => {
   const { text, from, to } = req.query;
   // console.log(text, to, from);
-  
 
   if (text && to) {
     translate(text, { from, to })
