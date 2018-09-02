@@ -7,13 +7,13 @@ var youtubedl = require("youtube-dl");
 
 app.get("/youtube", function(req, res) {
   const { url } = req.query;
-  var options = ["--username=user", "--password=hunter2"];
+  var options = ['-o -'];
   youtubedl.getInfo(url, options, function(err, info) {
     if (err) throw err;
 
-    console.log("url:", info.url);
+    console.log("url:", info);
     res.header("Content-Type", "application/json");
-    res.send(JSON.stringify({ downloadUrl: info.url }, null, 4));
+    res.send(JSON.stringify({ downloadUrl: info }, null, 4));
   });
 });
 
