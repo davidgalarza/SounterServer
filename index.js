@@ -25,7 +25,7 @@ app.get("/youtubeDirect", function(req, res) {
       process.exit(1);
       return;
     }
-    let format = ytdl.chooseFormat(info.formats, { filter: "audioonly" });
+    let format = ytdl.chooseFormat(info.formats, { filter: "video" });
     if (format instanceof Error) {
       console.error(format.message);
       process.exit(1);
